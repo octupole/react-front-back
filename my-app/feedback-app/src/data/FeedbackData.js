@@ -1,8 +1,10 @@
-import React from "react";
+
+
+import { v4 as uuid4} from 'uuid';
 
 const FeedbackData = [
     {
-        id: 1,
+        id: `${uuid4()}`,
         rating: 8,
         text: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
         Nulla et dictum nisl, ac aliquet dui. Praesent vestibulum quis odio in porta. Vivamus quis 
@@ -12,7 +14,7 @@ const FeedbackData = [
         velit sit amet, volutpat sem. Etiam at lorem magna. Nulla consequat diam eget orci accumsan sodales.`,
       },
       {
-        id: 2,
+        id: `${uuid4()}`,
         rating: 3,
         text: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
         Nulla et dictum nisl, ac aliquet dui. Praesent vestibulum quis odio in porta. Vivamus quis 
@@ -22,7 +24,7 @@ const FeedbackData = [
         velit sit amet, volutpat sem. Etiam at lorem magna. Nulla consequat diam eget orci accumsan sodales.`,
       },
       {
-        id: 3,
+        id: `${uuid4()}`,
         rating: 9,
         text: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
         Nulla et dictum nisl, ac aliquet dui. Praesent vestibulum quis odio in porta. Vivamus quis 

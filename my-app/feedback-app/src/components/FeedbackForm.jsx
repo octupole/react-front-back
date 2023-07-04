@@ -1,46 +1,67 @@
-import { useState, useContext, useEffect } from 'react'
+
 import { v4 as uuid4} from 'uuid';
 import Card from './shared/Card';
 import Button from './shared/Button'
 import RatingSelect from './RatingSelect';
+import { useState, useContext, useEffect} from 'react'
+import FeedbackContext from '../context/FeedbackContext';
 
-const FeedbackForm = ({addFeedback}) => {
-  const [text,setText]=useState();
+const FeedbackForm = () => {
+  const [text,setText]=useState('');
   const [btnDisabled, setBtnDisabled] = useState(true);
-  const [message, setMessage] =useState()
+  const [message, setMessage] =useState('')
   const [rating, setRating] = useState(10)
 
+  const {addFeedback, feedbackEdit, updateFeedback} = useContext(FeedbackContext)
 
-  const handleTextChange= (e) =>{
-    const value=e.target.value;
-    
-    if(value ===''){
+  const handleTextChange = (e) => {
+    e.preventDefault();
+    const value = e.target.value;
+
+    if (value === "") {
       setBtnDisabled(true);
-      setMessage(null);
-    } else if(value.trim().length < 10){
+      setMessage("");
+    } else if (value.trim().length < 10) {
       setBtnDisabled(true);
-      setMessage('More than 10 characters, please!')
+      setMessage("More than 10 characters, please!");
     } else {
-      setMessage(null)
+      setMessage("");
       setBtnDisabled(false);
     }
-    setText(value)
-  }
-  
+    setText(value);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-     if(text.trim().length > 10){
-      const myFeedback={
+    if (text.trim().length >= 10) {
+      const myFeedback = {
         text,
-        rating
-     }
-     myFeedback.id=uuid4();
-     addFeedback(myFeedback);
-     setText('')
-     }
-  }
+        rating,
+      };
+      if (feedbackEdit.edit === true) {
+        updateFeedback(
+          feedbackEdit.item.id,myFeedback
+        );
+      } else {
+        myFeedback.id = uuid4();
+        addFeedback(myFeedback);
+        setText("");
+      }
+    }
+  };
 
-  
+  useEffect( () => {
+    console.log('Hello');
+    console.log(feedbackEdit.edit)
+
+    if(feedbackEdit.edit === true){
+      setBtnDisabled(false);
+      setText(feedbackEdit.item.text);
+      setRating(feedbackEdit.item.rating);
+    }
+  }
+  ,[feedbackEdit]);
+
   return (
     <Card>
       <form onSubmit={handleSubmit}>

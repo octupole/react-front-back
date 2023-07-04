@@ -1,33 +1,48 @@
 import React from "react";
-import { useState } from "react";
 import Header from "./components/Header";
 
-import FeedbackData from "./data/FeedbackData";
 import FeedbackList from "./components/FeedbackList";
 import FeedbackStats from "./components/FeedbackStats";
 import FeedbackForm from "./components/FeedbackForm";
+import { AboutPage } from "./pages/AboutPage";
+import {BrowserRouter, Route, Routes} from 'react-router-dom'
+import AboutIconLink from "./components/AboutIconLink";
+import {FeedbackProvider} from "./context/FeedbackContext";
+
 
 const App = () => {
-    const [feedback,setFeedback] = useState(FeedbackData);
-    const deleteFeedback = (id) => {
-        if(window.confirm('Are you sure?')){
-            setFeedback(feedback.filter( (p) => p.id !== id))
-        }
-        console.log(feedback)
-    };
-    const addFeedback = (newFeedback) => {
-
-      setFeedback([newFeedback,...feedback]);
-      console.log('App',newFeedback);
-    }
   return (
     <>
-      <Header />
-      <div className="container">
-      <FeedbackForm addFeedback={addFeedback}/>
-        <FeedbackStats feedback={feedback} />
-        <FeedbackList feedback={feedback} handleDelete={deleteFeedback}/>
-      </div>
+    <FeedbackProvider>
+      <BrowserRouter>
+        <Header />
+        <div className="container">
+          <Routes>
+            <Route
+              exact
+              path="/"
+              element={
+                <>
+                  <FeedbackForm  />
+                  <FeedbackStats />
+                  <FeedbackList/>
+                </>
+              }
+            />
+            <Route
+              exact
+              path="/about"
+              element={
+                <>
+                  <AboutPage />
+                </>
+              }
+            />
+          </Routes>
+          <AboutIconLink/>
+        </div>
+      </BrowserRouter>
+      </FeedbackProvider>
     </>
   );
 };
