@@ -26,6 +26,7 @@ const FeedbackForm = ({addFeedback}) => {
     }
     setText(value)
   }
+  
   const handleSubmit = (e) => {
     e.preventDefault();
      if(text.trim().length > 10){
@@ -38,6 +39,8 @@ const FeedbackForm = ({addFeedback}) => {
      setText('')
      }
   }
+
+  
   return (
     <Card>
       <form onSubmit={handleSubmit}>
