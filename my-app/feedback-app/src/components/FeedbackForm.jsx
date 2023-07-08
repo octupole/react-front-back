@@ -51,8 +51,6 @@ const FeedbackForm = () => {
   };
 
   useEffect( () => {
-    console.log('Hello');
-    console.log(feedbackEdit.edit)
 
     if(feedbackEdit.edit === true){
       setBtnDisabled(false);

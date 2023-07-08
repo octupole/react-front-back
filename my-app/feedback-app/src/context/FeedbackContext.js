@@ -1,41 +1,76 @@
-import { createContext, useState } from "react";
-import FeedbackData from "../data/FeedbackData";
+import { createContext, useEffect, useState } from "react";
+
 const FeedbackContext = createContext();
 
 export const FeedbackProvider = ({ children }) => {
-  const [feedback, setFeedback] = useState(FeedbackData);
-  const [feedbackEdit, setFeedbackEdit] = useState(
-    {
-      item: {},
-      edit: false
-    }
-  )
-
-  const deleteFeedback = (id) => {
+  const [isLoading,setIsLoading]=useState(true);
+  const [feedback, setFeedback] = useState([]);
+  const [feedbackEdit, setFeedbackEdit] = useState({
+    item: {},
+    edit: false,
+  });
+  useEffect(() => {
+    fetchFeedback();
+    
+  }, []);
+  
+  const fetchFeedback = async () =>{
+    const response = await fetch(`/feedback?_sort=id`)
+    const data =await response.json();
+    setFeedback(data);
+    setIsLoading(false);
+  }
+  const deleteFeedback = async (id) => {
     if (window.confirm("Are you sure?")) {
+      const res = await fetch(`/feedback/${id}`,{
+        method: 'DELETE',
+        headers: {
+          'Content-Type':'application/json'
+        }
+      });
       setFeedback(feedback.filter((p) => p.id !== id));
     }
   };
 
-  const addFeedback = (newFeedback) => {
-    setFeedback([newFeedback, ...feedback]);
+  const addFeedback = async (newFeedback) => {
+    const res = await fetch(`/feedback`,
+    {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+        "x-access-token": "token-value",
+      },
+      body: JSON.stringify(newFeedback),
+    });
+    const data= await res.json()
+    setFeedback([data, ...feedback]);
   };
 
-  const editFeedback = (item) =>{
-    const newItem={
+  const editFeedback = (item) => {
+    const newItem = {
       item,
-      edit: true
-    }
-    setFeedbackEdit(newItem)
-  }
-  const updateFeedback = (id,updte) =>{
-    setFeedback(feedback.map(
-      (item) => item.id === id ?{...item,...updte}: item 
-    ))
+      edit: true,
+    };
+    setFeedbackEdit(newItem);
+  };
+  const updateFeedback = (id, updte) => {
+    setFeedback(
+      feedback.map((item) => (item.id === id ? { ...item, ...updte } : item))
+    );
   };
 
   return (
-    <FeedbackContext.Provider value={{ feedback, feedbackEdit, deleteFeedback, addFeedback, editFeedback, updateFeedback}}>
+    <FeedbackContext.Provider
+      value={{
+        feedback,
+        feedbackEdit,
+        isLoading,
+        deleteFeedback,
+        addFeedback,
+        editFeedback,
+        updateFeedback,
+      }}
+    >
       {children}
     </FeedbackContext.Provider>
   );
