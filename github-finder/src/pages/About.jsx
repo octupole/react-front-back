@@ -1,6 +1,7 @@
 import React from 'react'
 
 const About = () => {
+
   return (
     <>
       <h1 className='text-6xl mb-4'>Github Finder</h1>
@@ -14,6 +15,7 @@ const About = () => {
         Udemy course by
         <strong>
           <a href='https://traversymedia.com'> Brad Traversy</a>
+          <p>My Token: {process.env.REACT_APP_GITHUB_TOKEN}</p>          
         </strong>
         .
       </p>
