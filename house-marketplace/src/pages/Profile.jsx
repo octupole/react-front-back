@@ -1,9 +1,10 @@
 import React from 'react'
-import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { useState} from 'react'
+
 import { getAuth, updateProfile } from 'firebase/auth'
 import { db } from '../firebase.config'
 import { useNavigate } from 'react-router-dom'
+
 import {
   updateDoc,
   doc,
@@ -21,8 +22,9 @@ const Profile = () => {
   const [changeDetails, setChangeDetails] = useState(false)
   const navigate = useNavigate()
   const onLogout = () => {
-    auth.signOut()
+    auth.signOut();
     navigate('/')
+    window.location.reload(false)
   }
   const onSubmit = async () => {
     try {
