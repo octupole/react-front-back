@@ -3,13 +3,16 @@ import { useState} from 'react'
 
 import { getAuth, updateProfile } from 'firebase/auth'
 import { db } from '../firebase.config'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
+
 
 import {
   updateDoc,
   doc,
 } from 'firebase/firestore'
 import { toast } from 'react-toastify'
+import arrowRight from '../assets/svg/keyboardArrowRightIcon.svg'
+import homeIcon from '../assets/svg/homeIcon.svg'
 
 const Profile = () => {
   const auth = getAuth()
@@ -96,6 +99,11 @@ const Profile = () => {
             />
           </form>
         </div>
+        <Link to='/create-listing' className="createListing">
+          <img src={homeIcon} alt='home'/>
+          <p>Sell or rent your home</p>
+          <img src={arrowRight} alt='arrow right'/>
+        </Link>
       </main>
     </div>
 
